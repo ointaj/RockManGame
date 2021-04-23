@@ -121,14 +121,14 @@ void GameLogic::AiMovment(const std::vector<uint16_t>& genpOS, uint16_t& posOfEn
 	for (auto& test : genpOS)
 	{
 		count++;
-		if (test >= posOfEntity - 2 && test <= posOfEntity + 5)
+		if ((test >= (posOfEntity - 2)) && (test <= (posOfEntity + 5)))
 		{
-			if (posOfEntity > this->scThickness + 3 && posOfEntity < this->scThickness * 3 - (posMove * genpOS.size()))
+			if ((posOfEntity > (this->scThickness + 3)) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size())))
 			{
 				posOfEntity += posMove;
 				if (count > 1)
 				{
-					if (posOfEntity == startValeu && posOfEntity > this->scThickness + 3 && posOfEntity < this->scThickness * 3 - (posMove * genpOS.size() * genpOS.size()))
+					if ((posOfEntity == startValeu) && (posOfEntity > this->scThickness + 3) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
 					{
 						posOfEntity += posMove;
 					}
@@ -143,7 +143,8 @@ void GameLogic::AiMovment(const std::vector<uint16_t>& genpOS, uint16_t& posOfEn
 				posOfEntity -= posMove;
 				if (count > 1)
 				{
-					if (posOfEntity == startValeu && posOfEntity > this->scThickness + 3 && posOfEntity < this->scThickness * 3 - (posMove * genpOS.size()) * genpOS.size())
+					if ((posOfEntity == startValeu) && (posOfEntity > this->scThickness + 3) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
+
 					{
 						posOfEntity += (posMove * 2);
 					}
