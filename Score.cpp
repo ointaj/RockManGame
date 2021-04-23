@@ -28,16 +28,17 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 		{
 			if(!this->DataOfFile.empty())
 			{
-				bool testt = false;
-				const auto Delimer = this->DataOfFile.find("/");
-				const auto SecondDelimmeter = this->DataOfFile.find("->");
-				const auto TimeDelimter = this->DataOfFile.find("->", SecondDelimmeter + 1);
-				const auto NameInFile = this->DataOfFile.substr(0, Delimer);
-				const auto ScoreValue = this->DataOfFile.substr(Delimer + 1, SecondDelimmeter - Delimer - 1);
-				const auto Difficulty = this->DataOfFile.substr(SecondDelimmeter + 3, TimeDelimter - SecondDelimmeter - 3);
-
+				
 				if (readFile.is_open())
 				{
+					bool testt = false;
+					const auto Delimer = this->DataOfFile.find("/");
+					const auto SecondDelimmeter = this->DataOfFile.find("->");
+					const auto TimeDelimter = this->DataOfFile.find("->", SecondDelimmeter + 1);
+					const auto NameInFile = this->DataOfFile.substr(0, Delimer);
+					const auto ScoreValue = this->DataOfFile.substr(Delimer + 1, SecondDelimmeter - Delimer - 1);
+					const auto Difficulty = this->DataOfFile.substr(SecondDelimmeter + 3, TimeDelimter - SecondDelimmeter - 3);
+					
 					if (NameInFile == std::get<0>(ScoreData))
 					{
 						if ((static_cast<uint32_t>(std::stoi(ScoreValue)) <= std::get<1>(ScoreData)) && (Difficulty == std::get<2>(ScoreData)))
