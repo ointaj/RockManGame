@@ -117,7 +117,6 @@ void Score::ShowScore()
 				const auto ScoreSub = this->DataOfFile.substr(posOfDelimeter + 1, SecDelimter - posOfDelimeter - 1);
 				if (std::to_string(test) == ScoreSub)
 				{
-					//create vector of subsrings, name, score,datw
 					std::vector<std::string> SubstrOfData;
 					constexpr std::size_t ReserveValue = 4;
 					SubstrOfData.reserve(ReserveValue);
@@ -134,19 +133,19 @@ void Score::ShowScore()
 			if (_kbhit())
 			{
 				const char val = _getch();
-				if (val == '1')
+				if (val == _nEnterScreenval.fChoose)
 				{
 					this->HighestScore(*std::max_element(sortValue.begin(), sortValue.end()));
 					return;
 				}
-				if (val == 27)
+				if (val == _nEnterScreenval.asciiEnd)
 				{
 					this->readFile.close();
 					return;
 				}
 			}
 		}
-		RowPos = _nEnterScreenval.rowPosDiff; //set pos value back
+		RowPos = _nEnterScreenval.rowPosDiff;
 	} while (true);
 }
 
@@ -179,14 +178,13 @@ std::optional<std::string> Score::ChooseFileSave()
 	} 
 	while (true);
 	system("cls");
-	_consPos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff,"Enter Name: ");
+	_consPos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff,_sEnterScreenval.sEnterName);
 	const auto nameTest = _inpStream.sInput();
 	return nameTest;
 }
 
 std::optional<Player> Score::ControlPlayerName(const std::pair<std::string, std::string>& NameDiff)
 {
-	//create substrings for control
 	this->readFile.open(this->tesPath);
 	while (getline(this->readFile, this->DataOfFile))
 	{
@@ -209,10 +207,7 @@ std::optional<Player> Score::ControlPlayerName(const std::pair<std::string, std:
 				}
 			}
 		}
-		else
-		{
-			//idk
-		}
+
 	}
 	this->readFile.close();
 	return std::nullopt;
@@ -230,7 +225,7 @@ void Score::ScorePrint(const std::optional<std::string>& Name)
 {
 	ConsolePos _consPos;
 	
-	std::string sName = "Game without playername ";
+	std::string sName = "Game without PlayerName ";
 
 	if (Name != std::nullopt)
 	{
