@@ -236,14 +236,14 @@ void ConsoleScreen::ScoreDataPrinter(const std::vector<std::string>& DataOfFile,
 	}
 }
 
-uint16_t ConsoleScreen::LenghOfPrinterVec() const
+uint16_t ConsoleScreen::LengtgOfsVec(const std::vector<std::string>& sVec) const
 {
 	sEnterScrenVal _sEnterScrenVal;
 	uint16_t Length{};
-	for (auto& Value : _sEnterScrenVal.sDataOfPlayers)
+	for (auto& Value : sVec)
 	{
 		Length += static_cast<uint16_t>(Value.length());
 	}
-	Length += static_cast<uint16_t>(_sEnterScrenVal.sDataOfPlayers.size() * 3);
+	Length += static_cast<uint16_t>(sVec.size() * 3);
 	return Length;
 }
