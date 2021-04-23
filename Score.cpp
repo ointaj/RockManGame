@@ -26,11 +26,7 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 		this->readFile.open(this->tesPath);
 		while (getline(this->readFile, this->DataOfFile))
 		{
-			if (this->DataOfFile.empty())
-			{
-				continue;
-			}
-			else
+			if(!this->DataOfFile.empty())
 			{
 				bool testt = false;
 				const auto Delimer = this->DataOfFile.find("/");
@@ -74,7 +70,6 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 
 void Score::ShowScore()
 {
-	//ConsolePos _posCons;
 	ConsoleScreen _consScreen;
 	EnterScreenVal _nEnterScreenval;
 	sEnterScrenVal _sEnterScrenVal;
