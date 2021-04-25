@@ -33,6 +33,7 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) = 0;
 	virtual void PrintMenuValues(const uint32_t& midPos, const uint32_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) = 0;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue) = 0;
+	virtual void PrintScoreList(const uint16_t& MidPosLength) = 0;
 	virtual std::string DiffToString(const uint16_t& DiffValue) = 0;
 	virtual uint16_t MidPosition() const = 0;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) = 0;
@@ -64,6 +65,7 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) override;
 	virtual void PrintMenuValues(const uint32_t& midPos,const uint32_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) override;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue) override;
+	virtual void PrintScoreList(const uint16_t& MidPosLength) override;
 	virtual std::string DiffToString(const uint16_t& DiffValue) override;
 	virtual uint16_t MidPosition() const override;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) override;
@@ -87,10 +89,10 @@ public:
 	const svec sValsSave = { "*********************","|DO YOU WANT TO SAVE|"," |YOUR ACHIVED SCORE|","*********************" };
 	const svec sValsStartChoose = {"1. START GAME","2. INTRODUCTION","Esc(button) ENDGAME"};
 	const svec sBorders = { "*"," "," ","*" };
-
-
-
 	const svec sDataOfPlayers = {"NAME: ","SCORE: ", "DIFFICULTY: ","DATE: "};
+	const svec sScoreList = { "*********************","|    SCORE LIST    !|","*********************" };
+
+	const str sEnterName = "Enter the name: ";
 };
 
 class ReturnThreadSleepVal

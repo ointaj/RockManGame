@@ -194,6 +194,8 @@ void ConsoleScreen::PrintScoreBorders(const uint16_t& CollumnHeight, const uint1
 	ConsolePos _console;
 	EnterScreenVal _enterScreenVals;
 
+	this->PrintScoreList(LenghhValue);
+
 	for (uint16_t pos = _enterScreenVals.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
 	{
 		_console.Position(pos,static_cast<uint16_t>(_enterScreenVals.rowPosDiff - 2), static_cast<std::string>("-"));
@@ -211,6 +213,22 @@ void ConsoleScreen::PrintScoreBorders(const uint16_t& CollumnHeight, const uint1
 	{
 		_console.Position(pos, static_cast<uint16_t>((_enterScreenVals.rowPosDiff - 1) + (CollumnHeight + 4)), static_cast<std::string>("-"));
 	}
+}
+
+void ConsoleScreen::PrintScoreList(const uint16_t& MidPosLength)
+{
+	sEnterScrenVal _sEnterScreenValues;
+	EnterScreenVal _nEnterScreenValues;
+	ConsolePos _consPos;
+
+	uint16_t RowPosition = _nEnterScreenValues.rowPosDiff - _sEnterScreenValues.sScoreList.size() - 1;
+	
+	for (auto& Values : _sEnterScreenValues.sScoreList)
+	{
+		_consPos.Position(static_cast<uint16_t>(MidPosLength / 2 - _sEnterScreenValues.sScoreList.at(0).length() / 2),RowPosition,Values);
+		RowPosition++;
+	}
+
 }
 
 uint16_t ConsoleScreen::MidPosition() const
