@@ -25,13 +25,14 @@ class bConsoleScreen
 {
 public:
 	bConsoleScreen() = default;
+	virtual void Welcome(void) = 0;
 	virtual Start MainStart(void) = 0;
 	virtual ThreadSleepValue chDifficulty(void) = 0;
 	virtual void Borders(void) = 0;
 	virtual void DownBorders(void) = 0;
 	virtual void ClickTest(const std::function<int __cdecl()>& Func, bool& Loop, std::optional<uint16_t>& Vall, const std::optional<ClickAI>& AiClick) = 0;
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) = 0;
-	virtual void PrintMenuValues(const uint32_t& midPos, const uint32_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) = 0;
+	virtual void PrintMenuValues(const uint16_t& midPos, const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) = 0;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue) = 0;
 	virtual void PrintScoreList(const uint16_t& MidPosLength) = 0;
 	virtual std::string DiffToString(const uint16_t& DiffValue) = 0;
@@ -43,7 +44,8 @@ public:
 
 class ConsoleScreen : public bConsoleScreen
 {
-private:
+protected:
+
 public:
 	uint16_t ScreenWidth{};
 	uint16_t ScreenHeight{};
@@ -51,19 +53,20 @@ public:
 	
 	ConsoleScreen() = default;
 	
-	ConsoleScreen(const uint32_t& sWidth, const uint32_t& sHeight)
-		: ScreenHeight(sHeight), ScreenWidth(sWidth),ScreenThickness(sWidth/4) {}
+	ConsoleScreen(const uint16_t& sWidth, const uint16_t& sHeight)
+		: ScreenHeight(sHeight), ScreenWidth(sWidth),ScreenThickness(sWidth/(uint16_t)4) {}
 	
 	ConsoleScreen(const uint16_t& scThick)
 		: ScreenThickness(scThick){}
 
+	virtual void Welcome(void) override;
 	virtual Start MainStart(void) override;
 	virtual ThreadSleepValue chDifficulty(void) override;
 	virtual void Borders(void) override;
 	virtual void ClickTest(const std::function<int __cdecl()>& Func, bool& Loop, std::optional<uint16_t>& Vall, const std::optional<ClickAI>& AiClick = std::nullopt) override;
 	virtual void DownBorders(void) override;
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) override;
-	virtual void PrintMenuValues(const uint32_t& midPos,const uint32_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) override;
+	virtual void PrintMenuValues(const uint16_t& midPos,const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) override;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue) override;
 	virtual void PrintScoreList(const uint16_t& MidPosLength) override;
 	virtual std::string DiffToString(const uint16_t& DiffValue) override;
@@ -90,8 +93,7 @@ public:
 	const svec sValsStartChoose = {"1. START GAME","2. INTRODUCTION","Esc(button) ENDGAME"};
 	const svec sBorders = { "*"," "," ","*" };
 	const svec sDataOfPlayers = {"NAME: ","SCORE: ", "DIFFICULTY: ","DATE: "};
-	const svec sScoreList = { "*********************","|    SCORE LIST    !|","*********************" };
-
+	const svec sScoreList = { "*********************","|    SCORE LIST!    |","*********************" };
 	const str sEnterName = "Enter the name: ";
 };
 

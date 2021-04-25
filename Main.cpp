@@ -1,7 +1,6 @@
 #include "Screen.h"
 #include "GameLogic.h"
 #include "Score.h"
-//test
 
 int32_t main()
 {
@@ -11,6 +10,7 @@ int32_t main()
 	Score _score(_consScreen,5, "D:/TestPathMyGame/test.txt");
 
 	_console.setCursor();
+	_consScreen.Welcome();
 	const auto NameOfPlayer = _score.ChooseFileSave();
 	_score.PathTest();
 	do

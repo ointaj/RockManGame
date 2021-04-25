@@ -12,6 +12,7 @@
 #include <fstream>
 #include <set>
 #include <algorithm>
+
 class outStream
 {
 public:
@@ -21,19 +22,15 @@ public:
 		((std::cout << std::forward<Arg>(arv)), ...);
 	}
 };
+
+template<class ReturnType>
 class bInputStrem
 {
 public:
-	virtual std::string sInput() = 0;
-};
-
-class InputStrem : public bInputStrem
-{
-public:
-	virtual std::string sInput() override
+	ReturnType sInput()
 	{
-		std::string Name;
-		std::cin >> Name;
-		return Name;
+		ReturnType Input;
+		std::cin >> Input;
+		return Input;
 	}
 };

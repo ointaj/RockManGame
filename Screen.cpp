@@ -51,7 +51,7 @@ std::string ConsoleScreen::CreateEmptyString(const std::size_t& ValueSite)
 	return emptyString;
 }
 
-void ConsoleScreen::PrintMenuValues(const uint32_t& midPos, const uint32_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink = std::nullopt)
+void ConsoleScreen::PrintMenuValues(const uint16_t& midPos, const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink = std::nullopt)
 {
 
 	ConsolePos _consPos;
@@ -105,6 +105,32 @@ ThreadSleepValue ConsoleScreen::chDifficulty(void)
 		}
 	} 
 	while (_nEnterScreenval.infinitLoop);
+}
+
+void ConsoleScreen::Welcome(void)
+{
+	ConsolePos _consPos;
+	EnterScreenVal _nEnterScreenval;
+
+	const std::vector<std::string> WelcomeSign =
+	{
+		  "#     # ##### #     ##### ###### ##   ## #####",
+		  "#     # #     #     #     #    # # # # # #",
+		  "#  #  # ####  #     #     #    # #  #  # ####",
+		  "# # # # #     #     #     #    # #     # #  ",
+		  "##   ## ##### ##### ##### ###### #     # #####"
+	};
+	const std::string CreatorName = "Created by: @github.com/ointaj";
+	const std::string Press = "Press any key to continue...";
+
+	this->PrintMenuValues(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff, WelcomeSign);
+	_consPos.Position(static_cast<uint16_t>(_nEnterScreenval.midPosDiff + WelcomeSign.at(0).length() / 4), static_cast<uint16_t>(_nEnterScreenval.rowPosDiff + WelcomeSign.size() + 1),CreatorName);
+	_consPos.Position(static_cast<uint16_t>(_nEnterScreenval.midPosDiff + WelcomeSign.at(0).length() / 4), static_cast<uint16_t>(_nEnterScreenval.rowPosDiff + WelcomeSign.size() + 4), Press);
+	while (!_kbhit())
+	{
+	}
+	system("cls");
+	return;
 }
 
 Start ConsoleScreen::MainStart(void)
@@ -221,14 +247,13 @@ void ConsoleScreen::PrintScoreList(const uint16_t& MidPosLength)
 	EnterScreenVal _nEnterScreenValues;
 	ConsolePos _consPos;
 
-	uint16_t RowPosition = _nEnterScreenValues.rowPosDiff - _sEnterScreenValues.sScoreList.size() - 1;
+	uint16_t RowPosition = _nEnterScreenValues.rowPosDiff - static_cast<uint16_t>(_sEnterScreenValues.sScoreList.size() + 2);
 	
 	for (auto& Values : _sEnterScreenValues.sScoreList)
 	{
 		_consPos.Position(static_cast<uint16_t>(MidPosLength / 2 - _sEnterScreenValues.sScoreList.at(0).length() / 2),RowPosition,Values);
 		RowPosition++;
 	}
-
 }
 
 uint16_t ConsoleScreen::MidPosition() const

@@ -45,7 +45,7 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 						{
 							testt = true;
 							auto ReplacedData = this->DataOfFile.replace(Delimer + 1, SecondDelimmeter - Delimer - 1, std::to_string(std::get<1>(ScoreData)));
-							ReplacedData.replace(TimeDelimter + 3, ReplacedData.length() - TimeDelimter - 3, sCurrentTime);
+							ReplacedData.replace(TimeDelimter + 4, ReplacedData.length() - TimeDelimter - 4, sCurrentTime);
 							newData.append(ReplacedData).append("\n");
 						}
 					}
@@ -151,7 +151,7 @@ std::optional<std::string> Score::ChooseFileSave()
 	
 	ConsoleScreen _consScreen;
 	ConsolePos _consPos;
-	InputStrem _inpStream;
+	bInputStrem <std::string> _inpStream;
 	sEnterScrenVal _sEnterScreenval;
 	EnterScreenVal _nEnterScreenval;
 	_consScreen.PrintMenuValues(_nEnterScreenval.midPosDiff - 3, _nEnterScreenval.rowPosDiff - 3, _sEnterScreenval.sValsWelcome, std::nullopt);
@@ -222,7 +222,6 @@ void Score::ScorePrint(const std::optional<std::string>& Name)
 	ConsolePos _consPos;
 	
 	std::string sName = "Game without PlayerName ";
-
 	if (Name != std::nullopt)
 	{
 		sName = *Name;
