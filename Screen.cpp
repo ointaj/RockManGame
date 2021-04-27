@@ -1,6 +1,5 @@
 #include "Screen.h"
 
-
 void ConsoleScreen::ClickTest(const std::function<int __cdecl()>& Func, bool& Loop, std::optional<uint16_t>& Vall , const std::optional<ClickAI>& AiClick)
 {
 	EnterScreenVal _eScreenVal;
@@ -181,6 +180,37 @@ void ConsoleScreen::Borders(void)
 			startValue += ScreenThickness;
 		}
 	}
+	this->BordersInfo();
+}
+
+void ConsoleScreen::BordersInfo(void)
+{
+	ConsolePos _constPos;
+	sEnterScrenVal _sEnterScreenVal;
+	constexpr std::tuple<uint16_t,uint16_t,uint16_t,uint16_t> DivisionVar = std::make_tuple(3,4,10,2);
+	uint16_t StartPosColumns = this->ScreenThickness / std::get<2>(DivisionVar);
+	uint16_t sStartPosCol = StartPosColumns + std::get<3>(DivisionVar);
+	const auto LenghOfBorders = static_cast<uint16_t>(_sEnterScreenVal.sValsHow.at(0).length() + std::get<1>(DivisionVar));
+	const auto RowCount = static_cast<uint16_t>(_sEnterScreenVal.sValsInfoBorders.size() + _sEnterScreenVal.sValsHow.size() + std::get<0>(DivisionVar));
+	
+	for (uint16_t posR = StartPosColumns; posR < RowCount; ++posR)
+	{
+		for (uint16_t posC = StartPosColumns; posC < LenghOfBorders; ++posC)
+		{
+			_constPos.Position(posC,posR,_sEnterScreenVal.Empty);
+		}
+	}
+	for (auto& Info : _sEnterScreenVal.sValsInfoBorders) //call the function
+	{
+		_constPos.Position(sStartPosCol, StartPosColumns, Info);
+		StartPosColumns++;
+	}
+	sStartPosCol--;
+	for (auto& How : _sEnterScreenVal.sValsHow)
+	{
+		_constPos.Position(sStartPosCol, StartPosColumns, How);
+		StartPosColumns++;
+	}
 }
 
 void ConsoleScreen::DownBorders(void)
@@ -215,12 +245,15 @@ std::string ConsoleScreen::DiffToString(const uint16_t& DiffValue)
 	return _sEnterValue.sValsDiffChoose.at(DiffValue - 2).substr(2, _sEnterValue.sValsDiffChoose.at(DiffValue - 2).length() - 2);
 }
 
-void ConsoleScreen::PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LenghhValue)
+void ConsoleScreen::PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LenghhValue, const std::optional<eScoreOptional>& oScorePrint = std::nullopt )
 {
 	ConsolePos _console;
 	EnterScreenVal _enterScreenVals;
-
-	this->PrintScoreList(LenghhValue);
+	
+	if (oScorePrint || oScorePrint != std::nullopt)
+	{
+		this->PrintScoreList(LenghhValue);
+	}
 
 	for (uint16_t pos = _enterScreenVals.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
 	{
@@ -246,7 +279,6 @@ void ConsoleScreen::PrintScoreList(const uint16_t& MidPosLength)
 	sEnterScrenVal _sEnterScreenValues;
 	EnterScreenVal _nEnterScreenValues;
 	ConsolePos _consPos;
-
 	uint16_t RowPosition = _nEnterScreenValues.rowPosDiff - static_cast<uint16_t>(_sEnterScreenValues.sScoreList.size() + 2);
 	
 	for (auto& Values : _sEnterScreenValues.sScoreList)
@@ -260,7 +292,6 @@ uint16_t ConsoleScreen::MidPosition() const
 {
 	return static_cast<uint16_t>(this->ScreenWidth / 2);
 }
-
 
 void ConsoleScreen::ScoreDataPrinter(const std::vector<std::string>& DataOfFile, const uint16_t& RowPos)
 {

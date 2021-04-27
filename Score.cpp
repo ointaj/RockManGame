@@ -1,5 +1,5 @@
 #include "Score.h"
-
+//CHANGE
 SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::string>& ScoreData)
 {
 	const auto Val = this->ControlPlayerName(std::make_pair(std::get<0>(ScoreData), std::get<2>(ScoreData)));
@@ -98,7 +98,7 @@ void Score::ShowScore()
 	system("cls");
 	auto RowPos = _nEnterScreenval.rowPosDiff;
 	const auto LenghOfVec = _consScreen.LengtgOfsVec(_sEnterScrenVal.sDataOfPlayers);
-	_consScreen.PrintScoreBorders(RowCount, (*std::max_element(lenghString.begin(), lenghString.end()) + LenghOfVec));
+	_consScreen.PrintScoreBorders(RowCount, (*std::max_element(lenghString.begin(), lenghString.end()) + LenghOfVec), eScoreOptional::PRINT);
 
 	do
 	{
@@ -203,7 +203,6 @@ std::optional<Player> Score::ControlPlayerName(const std::pair<std::string, std:
 				}
 			}
 		}
-
 	}
 	this->readFile.close();
 	return std::nullopt;
@@ -298,7 +297,7 @@ void Score::HighestScore(const uint16_t& ScoreValue)
 	this->readFile.close();
 
 	_constScreen.PrintMenuValues(_nEnterScreenval.midPosDiff - 5, _nEnterScreenval.rowPosDiff - 5, _sEnterScreenVal.sValsHighestScore,std::nullopt);
-	_constScreen.PrintScoreBorders(1,static_cast<uint16_t>(HighestScoreVal.length()));
+	_constScreen.PrintScoreBorders(1,static_cast<uint16_t>(HighestScoreVal.length()),std::nullopt);
 	_consolePos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff, HighestScoreVal);
 	do
 	{
