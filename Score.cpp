@@ -28,7 +28,6 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 		{
 			if(!this->DataOfFile.empty())
 			{
-				
 				if (readFile.is_open())
 				{
 					bool testt = false;
@@ -84,15 +83,18 @@ void Score::ShowScore()
 	this->readFile.open(this->tesPath);
 	while (getline(this->readFile, this->DataOfFile))
 	{
-		lenghString.emplace_back(static_cast<uint16_t>(this->DataOfFile.length()));
-		const auto findDel = this->DataOfFile.find("/");
-		const auto SecDelimter = this->DataOfFile.find("->", findDel + 1);
-		if (findDel != std::string::npos)
+		if (!this->DataOfFile.empty())
 		{
-			const auto ValScore = static_cast<uint32_t>(std::stoi(this->DataOfFile.substr(findDel + 1, SecDelimter - findDel - 1)));
-			sortValue.insert(ValScore);
+			lenghString.emplace_back(static_cast<uint16_t>(this->DataOfFile.length()));
+			const auto findDel = this->DataOfFile.find("/");
+			const auto SecDelimter = this->DataOfFile.find("->", findDel + 1);
+			if (findDel != std::string::npos)
+			{
+				const auto ValScore = static_cast<uint32_t>(std::stoi(this->DataOfFile.substr(findDel + 1, SecDelimter - findDel - 1)));
+				sortValue.insert(ValScore);
+			}
+			RowCount++;
 		}
-		RowCount++;
 	}
 	this->readFile.close();
 	system("cls");
@@ -102,7 +104,7 @@ void Score::ShowScore()
 
 	do
 	{
-		for (auto& test : sortValue)
+		for (auto& sortVals : sortValue)
 		{
 			this->readFile.open(this->tesPath);
 
@@ -111,7 +113,7 @@ void Score::ShowScore()
 				const auto posOfDelimeter = this->DataOfFile.find("/");
 				const auto SecDelimter = this->DataOfFile.find("->");
 				const auto ScoreSub = this->DataOfFile.substr(posOfDelimeter + 1, SecDelimter - posOfDelimeter - 1);
-				if (std::to_string(test) == ScoreSub)
+				if (std::to_string(sortVals) == ScoreSub)
 				{
 					std::vector<std::string> SubstrOfData;
 					constexpr std::size_t ReserveValue = 4;
@@ -128,13 +130,20 @@ void Score::ShowScore()
 			this->readFile.close();
 			if (_kbhit())
 			{
-				const char val = _getch();
-				if (val == _nEnterScreenval.fChoose)
+				const char InputValue = _getch();
+				if (InputValue == _nEnterScreenval.fChoose)
 				{
 					this->HighestScore(*std::max_element(sortValue.begin(), sortValue.end()));
 					return;
 				}
-				if (val == _nEnterScreenval.asciiEnd)
+
+				if (InputValue == _nEnterScreenval.sChoose)
+				{
+					this->EraseScoreList();
+					return;
+				}
+
+				if (InputValue == _nEnterScreenval.asciiEnd)
 				{
 					this->readFile.close();
 					return;
@@ -273,6 +282,12 @@ void Score::PathTest()
 	this->readFile.close();
 }
 
+void Score::EraseScoreList(void)
+{
+	this->writeInFile.open(this->tesPath);
+	this->writeInFile.close();
+}
+
 void Score::HighestScore(const uint16_t& ScoreValue)
 {
 	ConsoleScreen _constScreen;
@@ -296,7 +311,7 @@ void Score::HighestScore(const uint16_t& ScoreValue)
 	}
 	this->readFile.close();
 
-	_constScreen.PrintMenuValues(_nEnterScreenval.midPosDiff - 5, _nEnterScreenval.rowPosDiff - 5, _sEnterScreenVal.sValsHighestScore,std::nullopt);
+	_constScreen.PrintMenuValues(static_cast<uint16_t>(HighestScoreVal.length() / 2), _nEnterScreenval.rowPosDiff - 5, _sEnterScreenVal.sValsHighestScore,std::nullopt);
 	_constScreen.PrintScoreBorders(1,static_cast<uint16_t>(HighestScoreVal.length()),std::nullopt);
 	_consolePos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff, HighestScoreVal);
 	do
