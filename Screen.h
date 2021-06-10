@@ -4,7 +4,7 @@
 #include "Values.h"
 #include "Console.h"
 #include <functional>
-
+	
 using namespace std::chrono_literals;
 using ThreadSleepValue = std::pair<std::chrono::duration<double>,uint16_t>;
 
@@ -37,7 +37,6 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) = 0;
 	virtual void PrintMenuValues(const uint16_t& midPos, const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) = 0;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue, const std::optional<eScoreOptional>& oSorePrint) = 0;
-	virtual void PrintScoreList(const uint16_t& MidPosLength) = 0;
 	virtual std::string DiffToString(const uint16_t& DiffValue) = 0;
 	virtual uint16_t MidPosition() const = 0;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) = 0;
@@ -72,7 +71,6 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) override;
 	virtual void PrintMenuValues(const uint16_t& midPos,const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) override;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue, const std::optional<eScoreOptional>& oSorePrint) override;
-	virtual void PrintScoreList(const uint16_t& MidPosLength) override;
 	virtual std::string DiffToString(const uint16_t& DiffValue) override;
 	virtual uint16_t MidPosition() const override;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) override;
@@ -100,7 +98,9 @@ public:
 	const svec sScoreList = { "*********************","|    SCORE LIST!    |","*********************" };
 	const str sEnterName = "Enter the name: ";
 
-	const svec sValsInfoBorders = { "--------------","|  MOVEMANT  |","--------------" };
+	const svec sValsInfoBorders = {"--------------","|  MOVEMANT  |","--------------" };
+
+	const svec sValsButtonShowScore = {"-----------------------","|1 - BEST PLAYER SCORE|", "|2 - ERASE SCORE LIST |","-----------------------"};
 	const svec sValsHow = {"A - Move to left ","D - Move to right"};
 };
 

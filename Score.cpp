@@ -1,5 +1,5 @@
 #include "Score.h"
-//CHANGE
+
 SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::string>& ScoreData)
 {
 	const auto Val = this->ControlPlayerName(std::make_pair(std::get<0>(ScoreData), std::get<2>(ScoreData)));

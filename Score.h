@@ -29,6 +29,8 @@ public:
 	virtual char* CurrentTime() = 0;
 	virtual void SaveChangesInFile(const std::string& newData) = 0;
 	virtual void HighestScore(const uint16_t& ScoreValeu) = 0;
+
+	virtual void EraseScoreList(void) = 0;
  
 	virtual void PathTest() = 0;
 	~bScore() = default;
@@ -37,6 +39,7 @@ public:
 class Score : public bScore
 {
 	friend class ConsoleScreen;
+protected:
 private:
 	uint16_t ScoreValue{};
 	uint32_t uiScore{};
@@ -70,6 +73,9 @@ public:
 	virtual void ShowScore() override;
 	virtual char* CurrentTime() override;
 	virtual void SaveChangesInFile(const std::string& newData) override;
+	
+	virtual void EraseScoreList(void) override;
+
 	virtual void PathTest() override;
 	~Score() = default;
 

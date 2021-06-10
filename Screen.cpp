@@ -171,11 +171,11 @@ void ConsoleScreen::Borders(void)
 	for (uint16_t posHei = 0; posHei < this->ScreenHeight; ++posHei)
 	{
 		uint16_t startValue = 0;
-		for (auto& fun : _enterVal.sBorders)
+		for (auto& Borders : _enterVal.sBorders)
 		{
 			for (uint16_t __posHei = startValue; __posHei < ScreenThickness + startValue; ++__posHei)
 			{
-				_conole.Position(__posHei, posHei, fun);
+				_conole.Position(__posHei, posHei, Borders);
 			}
 			startValue += ScreenThickness;
 		}
@@ -248,47 +248,37 @@ std::string ConsoleScreen::DiffToString(const uint16_t& DiffValue)
 void ConsoleScreen::PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LenghhValue, const std::optional<eScoreOptional>& oScorePrint = std::nullopt )
 {
 	ConsolePos _console;
-	EnterScreenVal _enterScreenVals;
+	EnterScreenVal _nEnterScreenValues;
+	sEnterScrenVal _sEnterScreenValues;
 	
 	if (oScorePrint || oScorePrint != std::nullopt)
 	{
-		this->PrintScoreList(LenghhValue);
+		this->PrintMenuValues(LenghhValue / 2 - _sEnterScreenValues.sValsButtonShowScore.at(0).length() / 2, _nEnterScreenValues.rowPosDiff - static_cast<uint16_t>(_sEnterScreenValues.sScoreList.size() + 2),_sEnterScreenValues.sValsHighestScore);
 	}
-
-	for (uint16_t pos = _enterScreenVals.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
+	for (uint16_t pos = _nEnterScreenValues.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
 	{
-		_console.Position(pos,static_cast<uint16_t>(_enterScreenVals.rowPosDiff - 2), static_cast<std::string>("-"));
+		_console.Position(pos,static_cast<uint16_t>(_nEnterScreenValues.rowPosDiff - 2), static_cast<std::string>("-"));
 	}
-	for (uint16_t pos = _enterScreenVals.rowPosDiff - 1; pos < (_enterScreenVals.rowPosDiff - 1) + CollumnHeight + 4; ++pos)
+	for (uint16_t pos = _nEnterScreenValues.rowPosDiff - 1; pos < (_nEnterScreenValues.rowPosDiff - 1) + CollumnHeight + 7; ++pos)
 	{
-		_console.Position(static_cast<uint16_t>(_enterScreenVals.midPosDiff - 4),pos,"|");
-		for (uint16_t spos = _enterScreenVals.midPosDiff - 3; spos < LenghhValue - 24; ++spos)
+		_console.Position(static_cast<uint16_t>(_nEnterScreenValues.midPosDiff - 4),pos,"|");
+		for (uint16_t spos = _nEnterScreenValues.midPosDiff - 3; spos < LenghhValue - 24; ++spos)
 		{
 			_console.Position(spos, pos, " ");
 		}
 		_console.Position(static_cast<uint16_t>(LenghhValue + 12), pos, "|");
 	}
-	for (uint16_t pos = _enterScreenVals.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
+	for (uint16_t pos = _nEnterScreenValues.midPosDiff - 3; pos < LenghhValue + 12; ++pos)
 	{
-		_console.Position(pos, static_cast<uint16_t>((_enterScreenVals.rowPosDiff - 1) + (CollumnHeight + 4)), static_cast<std::string>("-"));
+		_console.Position(pos, static_cast<uint16_t>((_nEnterScreenValues.rowPosDiff - 1) + (CollumnHeight + 7)), static_cast<std::string>("-"));
+	}
+	if (oScorePrint || oScorePrint != std::nullopt)
+	{
+		this->PrintMenuValues(static_cast<uint16_t>(LenghhValue / 2 - _sEnterScreenValues.sValsButtonShowScore.at(0).length() / 2), CollumnHeight + _nEnterScreenValues.midPosDiff + 2, _sEnterScreenValues.sValsButtonShowScore);
 	}
 }
 
-void ConsoleScreen::PrintScoreList(const uint16_t& MidPosLength)
-{
-	sEnterScrenVal _sEnterScreenValues;
-	EnterScreenVal _nEnterScreenValues;
-	ConsolePos _consPos;
-	uint16_t RowPosition = _nEnterScreenValues.rowPosDiff - static_cast<uint16_t>(_sEnterScreenValues.sScoreList.size() + 2);
-	
-	for (auto& Values : _sEnterScreenValues.sScoreList)
-	{
-		_consPos.Position(static_cast<uint16_t>(MidPosLength / 2 - _sEnterScreenValues.sScoreList.at(0).length() / 2),RowPosition,Values);
-		RowPosition++;
-	}
-}
-
-uint16_t ConsoleScreen::MidPosition() const
+uint16_t ConsoleScreen::MidPosition(void) const
 {
 	return static_cast<uint16_t>(this->ScreenWidth / 2);
 }
