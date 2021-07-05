@@ -26,26 +26,24 @@ std::vector<std::vector<char>> GameLogic::setEntity(const ecPrint& eEntity)
 
 void GameLogic::CreateEntity(const uint16_t& fPos, const uint16_t& sPos, const ecPrint& eEntity)
 {
-	ConsolePos _consPos;
 	const auto value = setEntity(eEntity);
 	for (uint16_t pos = 0; pos < value.size(); pos++)
 	{
 		for (uint16_t _pos = 0; _pos < value.at(pos).size(); _pos++)
 		{
-			_consPos.Position(fPos + _pos, sPos + pos, value.at(pos).at(_pos));
+			this->_consPos.Position(fPos + _pos, sPos + pos, value.at(pos).at(_pos));
 		}
 	}
 }
 
 void GameLogic::EraseEntity(const uint16_t& fPos, const uint16_t& sPos, const ecPrint& eEntity)
 {
-	ConsolePos _consPos;
 	const auto value = setEntity(eEntity);
 	for (uint16_t pos = 0; pos < value.size(); pos++)
 	{
 		for (uint16_t _pos = 0; _pos < value.at(pos).size(); _pos++)
 		{
-			_consPos.Position(fPos + _pos, sPos + pos, this->sEmpTy);
+			this->_consPos.Position(fPos + _pos, sPos + pos, this->sEmpTy);
 		}
 	}
 }
@@ -57,7 +55,7 @@ std::vector<uint16_t> GameLogic::GenPos(const uint16_t& Values)
 	srand((uint16_t)time(NULL));
 	for (uint16_t pos = 0; pos < Values; ++pos)
 	{
-		uint16_t uiranVal = rand() % (this->scThickness * 2 - 4) + this->scThickness;
+		uint16_t uiranVal = rand() % (this->_consScreen.ScreenThickness * 2 - 4) + this->_consScreen.ScreenThickness;
 		vRandPos.emplace_back(uiranVal);
 	}
 	return vRandPos;
@@ -69,8 +67,7 @@ void GameLogic::AiLogic(void)
 	uint16_t heithtPos = 0;
 	uint16_t countEntiy{};
 	bool Loop = false;
-	uint16_t emidValeu = this->scWidth / 2;
-	ConsoleScreen _consScreen(this->scThickness);
+	uint16_t emidValeu = this->_consScreen.ScreenWidth / 2;
 	do
 	{
 		auto genValues = GenPos(setGenValue);
@@ -79,15 +76,15 @@ void GameLogic::AiLogic(void)
 			if (_kbhit())
 			{
 				std::optional<uint16_t> Null = std::nullopt;
-				_consScreen.ClickTest(_kbhit, Loop, Null,ClickAI::AI);
+				this->_consScreen.ClickTest(_kbhit, Loop, Null,ClickAI::AI);
 			}
 			
-			if (heithtPos == this->scHeight / 2) //middle
+			if (heithtPos == this->_consScreen.ScreenHeight / 2) //middle
 			{
 				this->AiMovment(genValues, emidValeu);
 			}
 
-			this->CreateEntity(emidValeu, this->scHeight - 2, ecPrint::ENTITY);
+			this->CreateEntity(emidValeu, this->_consScreen.ScreenHeight - 2, ecPrint::ENTITY);
 
 			for (auto& midValue : genValues)
 			{
@@ -106,8 +103,8 @@ void GameLogic::AiLogic(void)
 			}
 				
 			heithtPos++;
-			this->EraseEntity(emidValeu, this->scHeight - 2, ecPrint::ENTITY);
-		} while (heithtPos != this->scHeight - 2);
+			this->EraseEntity(emidValeu, this->_consScreen.ScreenHeight - 2, ecPrint::ENTITY);
+		} while (heithtPos != this->_consScreen.ScreenHeight - 2);
 		heithtPos = {};
 	} while (!Loop);
 	system("cls");
@@ -123,12 +120,12 @@ void GameLogic::AiMovment(const std::vector<uint16_t>& genpOS, uint16_t& posOfEn
 		count++;
 		if ((test >= (posOfEntity - 2)) && (test <= (posOfEntity + 5)))
 		{
-			if ((posOfEntity > (this->scThickness + 3)) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size())))
+			if ((posOfEntity > (this->_consScreen.ScreenThickness + 3)) && (posOfEntity < this->_consScreen.ScreenThickness * 3 - (posMove * genpOS.size())))
 			{
 				posOfEntity += posMove;
 				if (count > 1)
 				{
-					if ((posOfEntity == startValeu) && (posOfEntity > this->scThickness + 3) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
+					if ((posOfEntity == startValeu) && (posOfEntity > this->_consScreen.ScreenThickness + 3) && (posOfEntity < this->_consScreen.ScreenThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
 					{
 						posOfEntity += posMove;
 					}
@@ -143,7 +140,7 @@ void GameLogic::AiMovment(const std::vector<uint16_t>& genpOS, uint16_t& posOfEn
 				posOfEntity -= posMove;
 				if (count > 1)
 				{
-					if ((posOfEntity == startValeu) && (posOfEntity > this->scThickness + 3) && (posOfEntity < this->scThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
+					if ((posOfEntity == startValeu) && (posOfEntity > this->_consScreen.ScreenThickness + 3) && (posOfEntity < this->_consScreen.ScreenThickness * 3 - (posMove * genpOS.size() * genpOS.size())))
 
 					{
 						posOfEntity += (posMove * 2);
@@ -161,7 +158,7 @@ void GameLogic::ColisionControl(const std::tuple<uint16_t, uint16_t, uint16_t>& 
 {
 	//tuple -> heihtPos, midValue, EntityMidValue
 
-	if (this->scHeight - 4 == std::get<0>(PosData))
+	if (this->_consScreen.ScreenHeight - 4 == std::get<0>(PosData))
 	{
 		if ((std::get<1>(PosData) >= std::get<2>(PosData) - 2) && (std::get<1>(PosData) <= std::get<2>(PosData) + 5))
 		{
@@ -169,4 +166,3 @@ void GameLogic::ColisionControl(const std::tuple<uint16_t, uint16_t, uint16_t>& 
 		}
 	}
 }
-

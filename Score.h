@@ -40,27 +40,37 @@ class Score : public bScore
 {
 	friend class ConsoleScreen;
 protected:
+
 private:
 	uint16_t ScoreValue{};
 	uint32_t uiScore{};
 
-	std::string tesPath;
+	std::string testPath;
 	std::ifstream readFile;
 	std::ofstream writeInFile;
 	std::string DataOfFile;
-
-	uint16_t sHeight{};
-	uint16_t sThicknes{};
-
+	
+	ConsolePos& _consPos;
+	EnterScreenVal& _nEnterScreenVal;
+	sEnterScrenVal& _sEnterScreenVal;
+	ConsoleScreen& _consScreen;
 public:
 	Score() = default;
-	Score(const ConsoleScreen& conVal,const uint16_t& scoreValue, const std::string& Path)
-	{
-		this->sHeight = conVal.ScreenHeight;
-		this->sThicknes = conVal.ScreenThickness;
-		this->ScoreValue = scoreValue;
-		this->tesPath = Path;
-	}
+	
+	Score(ConsoleScreen& conVal,
+		  const uint16_t& scoreValue,
+		  const std::string& Path,
+		  ConsolePos& consPos,
+		  EnterScreenVal& nenterScreenVal,
+		  sEnterScrenVal& senterScreenVal)
+		:
+		_consScreen(conVal),
+		ScoreValue(scoreValue),
+		testPath(Path),
+		_consPos(consPos),
+		_nEnterScreenVal(nenterScreenVal),
+		_sEnterScreenVal(senterScreenVal)
+	{}
 	virtual void ScoreCounter(const uint16_t& DiffValue) override;
 	virtual void ScorePrint(const std::optional<std::string>& Name) override;
 	virtual void SetScorePoints() override;

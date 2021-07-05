@@ -37,7 +37,7 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) = 0;
 	virtual void PrintMenuValues(const uint16_t& midPos, const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) = 0;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue, const std::optional<eScoreOptional>& oSorePrint) = 0;
-	virtual std::string DiffToString(const uint16_t& DiffValue) = 0;
+	virtual std::string DiffToString(const uint16_t& DiffValue) const = 0;
 	virtual uint16_t MidPosition() const = 0;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) = 0;
 	virtual uint16_t LengtgOfsVec(const std::vector<std::string>& sVec) const = 0;
@@ -46,20 +46,30 @@ public:
 
 class ConsoleScreen : public bConsoleScreen
 {
-protected:
+private:
+	ConsolePos& _consPos;
+	EnterScreenVal& _nEnterScreenVal;
+	sEnterScrenVal& _sEnterScreenVal;
 
 public:
 	uint16_t ScreenWidth{};
 	uint16_t ScreenHeight{};
 	uint16_t ScreenThickness{};
+
+	ConsoleScreen(const uint16_t& sWidth, 
+				  const uint16_t& sHeight, 
+				  ConsolePos& consPos, 
+		          EnterScreenVal& nenterScreenVal, 
+				  sEnterScrenVal& senterScreenVal)
+		:
+		  ScreenHeight(sHeight),
+		  ScreenWidth(sWidth),
+		  ScreenThickness(sWidth/(uint16_t)4),
+		  _consPos(consPos), 
+		  _nEnterScreenVal(nenterScreenVal),
+		  _sEnterScreenVal(senterScreenVal)
+	{}
 	
-	ConsoleScreen() = default;
-	
-	ConsoleScreen(const uint16_t& sWidth, const uint16_t& sHeight)
-		: ScreenHeight(sHeight), ScreenWidth(sWidth),ScreenThickness(sWidth/(uint16_t)4) {}
-	
-	ConsoleScreen(const uint16_t& scThick)
-		: ScreenThickness(scThick){}
 
 	virtual void Welcome(void) override;
 	virtual Start MainStart(void) override;
@@ -71,37 +81,12 @@ public:
 	virtual std::string CreateEmptyString(const std::size_t& ValueSite) override;
 	virtual void PrintMenuValues(const uint16_t& midPos,const uint16_t& rowPos, const std::vector<std::string>& Values, const std::optional<bool>& Blink) override;
 	virtual void PrintScoreBorders(const uint16_t& CollumnHeight, const uint16_t& LengthValue, const std::optional<eScoreOptional>& oSorePrint) override;
-	virtual std::string DiffToString(const uint16_t& DiffValue) override;
+	virtual std::string DiffToString(const uint16_t& DiffValue) const override;
 	virtual uint16_t MidPosition() const override;
 	virtual void ScoreDataPrinter(const std::vector<std::string>& DataFromFile, const uint16_t& RowPos) override;
 	virtual uint16_t LengtgOfsVec(const std::vector<std::string>& sVec) const override;
 
 	~ConsoleScreen() = default;
-};
-
-class sEnterScrenVal
-{
-	using str = std::string;
-	using svec = std::vector<std::string>;
-public:
-	const str Empty = " ";
-	const svec sValsDiff = { "--------------","| DIIFICULTY |","--------------" };
-	const svec sValsSaveChoose = { "1. SAVE" , "2. DONT SAVE" };
-	const svec sValsDiffChoose = {"1. EASY", "2. MEDDIUM", "3. HARD", "Esc(button)  End"};
-	const svec sValsStart = { "*********************","| ATTENTION, ROCKS !|","*********************" };
-	const svec sValsWelcome = { "*********************","|     WELCOME!!!    |","*********************" };
-	const svec sValsHighestScore = { "*********************","|  HIGHEST SCORE!!! |","*********************" };
-	const svec sValsSave = { "*********************","|DO YOU WANT TO SAVE|"," |YOUR ACHIVED SCORE|","*********************" };
-	const svec sValsStartChoose = {"1. START GAME","2. INTRODUCTION","Esc(button) ENDGAME"};
-	const svec sBorders = { "*"," "," ","*" };
-	const svec sDataOfPlayers = {"NAME: ","SCORE: ", "DIFFICULTY: ","DATE: "};
-	const svec sScoreList = { "*********************","|    SCORE LIST!    |","*********************" };
-	const str sEnterName = "Enter the name: ";
-
-	const svec sValsInfoBorders = {"--------------","|  MOVEMANT  |","--------------" };
-
-	const svec sValsButtonShowScore = {"-----------------------","|1 - BEST PLAYER SCORE|", "|2 - ERASE SCORE LIST |","-----------------------"};
-	const svec sValsHow = {"A - Move to left ","D - Move to right"};
 };
 
 class ReturnThreadSleepVal
