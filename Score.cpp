@@ -6,7 +6,7 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 	const auto sCurrentTime = this->CurrentTime();
 	if (!Val)
 	{
-		this->writeInFile.open(this->tesPath, std::fstream::app);
+		this->writeInFile.open(this->testPath, std::fstream::app);
 
 		if (this->writeInFile.is_open())
 		{
@@ -23,7 +23,7 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 	if (Val)
 	{
 		std::string newData{};
-		this->readFile.open(this->tesPath);
+		this->readFile.open(this->testPath);
 		while (getline(this->readFile, this->DataOfFile))
 		{
 			if(!this->DataOfFile.empty())
@@ -70,17 +70,12 @@ SaveScore Score::SaveGameData(const std::tuple<std::string, uint32_t, std::strin
 
 void Score::ShowScore()
 {
-	ConsoleScreen _consScreen;
-	EnterScreenVal _nEnterScreenval;
-	sEnterScrenVal _sEnterScrenVal;
-
 	std::set<uint32_t, std::greater<uint32_t>> sortValue;
 	std::vector<uint16_t> lenghString;
 	
 	uint16_t RowCount{};
 	
-
-	this->readFile.open(this->tesPath);
+	this->readFile.open(this->testPath);
 	while (getline(this->readFile, this->DataOfFile))
 	{
 		if (!this->DataOfFile.empty())
@@ -98,15 +93,15 @@ void Score::ShowScore()
 	}
 	this->readFile.close();
 	system("cls");
-	auto RowPos = _nEnterScreenval.rowPosDiff;
-	const auto LenghOfVec = _consScreen.LengtgOfsVec(_sEnterScrenVal.sDataOfPlayers);
+	auto RowPos = _nEnterScreenVal.rowPosDiff;
+	const auto LenghOfVec = _consScreen.LengtgOfsVec(_sEnterScreenVal.sDataOfPlayers);
 	_consScreen.PrintScoreBorders(RowCount, (*std::max_element(lenghString.begin(), lenghString.end()) + LenghOfVec), eScoreOptional::PRINT);
 
 	do
 	{
 		for (auto& sortVals : sortValue)
 		{
-			this->readFile.open(this->tesPath);
+			this->readFile.open(this->testPath);
 
 			while (getline(this->readFile, this->DataOfFile))
 			{
@@ -131,26 +126,26 @@ void Score::ShowScore()
 			if (_kbhit())
 			{
 				const char InputValue = _getch();
-				if (InputValue == _nEnterScreenval.fChoose)
+				if (InputValue == _nEnterScreenVal.fChoose)
 				{
 					this->HighestScore(*std::max_element(sortValue.begin(), sortValue.end()));
 					return;
 				}
 
-				if (InputValue == _nEnterScreenval.sChoose)
+				if (InputValue == _nEnterScreenVal.sChoose)
 				{
 					this->EraseScoreList();
 					return;
 				}
 
-				if (InputValue == _nEnterScreenval.asciiEnd)
+				if (InputValue == _nEnterScreenVal.asciiEnd)
 				{
 					this->readFile.close();
 					return;
 				}
 			}
 		}
-		RowPos = _nEnterScreenval.rowPosDiff;
+		RowPos = _nEnterScreenVal.rowPosDiff;
 	} while (true);
 }
 
@@ -158,39 +153,36 @@ std::optional<std::string> Score::ChooseFileSave()
 {
 	system("cls");
 	
-	ConsoleScreen _consScreen;
-	ConsolePos _consPos;
 	bInputStrem <std::string> _inpStream;
-	sEnterScrenVal _sEnterScreenval;
-	EnterScreenVal _nEnterScreenval;
-	_consScreen.PrintMenuValues(_nEnterScreenval.midPosDiff - 3, _nEnterScreenval.rowPosDiff - 3, _sEnterScreenval.sValsWelcome, std::nullopt);
-	_consScreen.PrintMenuValues(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff, _sEnterScreenval.sValsSaveChoose,std::nullopt);
+	
+	_consScreen.PrintMenuValues(_nEnterScreenVal.midPosDiff - 3, _nEnterScreenVal.rowPosDiff - 3, _sEnterScreenVal.sValsWelcome, std::nullopt);
+	_consScreen.PrintMenuValues(_nEnterScreenVal.midPosDiff, _nEnterScreenVal.rowPosDiff, _sEnterScreenVal.sValsSaveChoose,std::nullopt);
 	do
 	{
 		const char value = _getch();
-		if (value == _nEnterScreenval.fChoose)
+		if (value == _nEnterScreenVal.fChoose)
 		{
 			break;
 		}
-		else if (value == _nEnterScreenval.sChoose)
+		else if (value == _nEnterScreenVal.sChoose)
 		{
 			return std::nullopt;
 		}
-		else if (value == _nEnterScreenval.asciiEnd)
+		else if (value == _nEnterScreenVal.asciiEnd)
 		{
 			exit(NULL);
 		}
 	} 
 	while (true);
 	system("cls");
-	_consPos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff,_sEnterScreenval.sEnterName);
+	_consPos.Position(_nEnterScreenVal.midPosDiff, _nEnterScreenVal.rowPosDiff,_sEnterScreenVal.sEnterName);
 	const auto nameTest = _inpStream.sInput();
 	return nameTest;
 }
 
 std::optional<Player> Score::ControlPlayerName(const std::pair<std::string, std::string>& NameDiff)
 {
-	this->readFile.open(this->tesPath);
+	this->readFile.open(this->testPath);
 	while (getline(this->readFile, this->DataOfFile))
 	{
 		if (this->readFile.is_open())
@@ -227,20 +219,18 @@ void Score::ScoreCounter(const uint16_t& DiffValue)
 
 void Score::ScorePrint(const std::optional<std::string>& Name)
 {
-	ConsolePos _consPos;
 	
 	std::string sName = "Game without PlayerName ";
 	if (Name != std::nullopt)
 	{
 		sName = *Name;
 	}
-	_consPos.Position(static_cast<uint16_t>(this->sThicknes * 2 - 15), static_cast<uint16_t>(this->sHeight + this->sHeight / 5 / 2), static_cast<std::string>("Name of player: "), sName,static_cast<std::string>(" SCORE: "), this->uiScore);
+	_consPos.Position(static_cast<uint16_t>(this->_consScreen.ScreenThickness * 2 - 15), static_cast<uint16_t>(this->_consScreen.ScreenHeight + (this->_consScreen.ScreenHeight / 5 / 2), static_cast<std::string>("Name of player: "), sName,static_cast<std::string>(" SCORE: "), this->uiScore));
 }
 
 void Score::SetScorePoints()
 {
-	constexpr uint8_t setValue = 0;
-	(*this).uiScore = setValue;
+	this->uiScore = 0;
 }
 uint32_t Score::fScoreValue() const
 {
@@ -254,7 +244,7 @@ uint16_t Score::ScorePoint() const
 
 void Score::SaveChangesInFile(const std::string& newData)
 {
-	this->writeInFile.open(this->tesPath);
+	this->writeInFile.open(this->testPath);
 	this->writeInFile << newData;
 	this->writeInFile.close();
 }
@@ -268,7 +258,7 @@ char* Score::CurrentTime()
 
 void Score::PathTest()
 {
-	this->readFile.open(this->tesPath);
+	this->readFile.open(this->testPath);
 	if (this->readFile.is_open())
 	{
 		this->readFile.close();
@@ -284,20 +274,17 @@ void Score::PathTest()
 
 void Score::EraseScoreList(void)
 {
-	this->writeInFile.open(this->tesPath);
+	this->writeInFile.open(this->testPath);
 	this->writeInFile.close();
 }
 
 void Score::HighestScore(const uint16_t& ScoreValue)
 {
-	ConsoleScreen _constScreen;
-	ConsolePos _consolePos;
-	EnterScreenVal _nEnterScreenval;
-	sEnterScrenVal _sEnterScreenVal;
+	
 	system("cls");
 
 	std::string HighestScoreVal;
-	this->readFile.open(this->tesPath);
+	this->readFile.open(this->testPath);
 	while (getline(this->readFile, this->DataOfFile))
 	{
 		const auto fDel = this->DataOfFile.find("/");
@@ -311,9 +298,9 @@ void Score::HighestScore(const uint16_t& ScoreValue)
 	}
 	this->readFile.close();
 
-	_constScreen.PrintMenuValues(static_cast<uint16_t>(HighestScoreVal.length() / 2), _nEnterScreenval.rowPosDiff - 5, _sEnterScreenVal.sValsHighestScore,std::nullopt);
-	_constScreen.PrintScoreBorders(1,static_cast<uint16_t>(HighestScoreVal.length()),std::nullopt);
-	_consolePos.Position(_nEnterScreenval.midPosDiff, _nEnterScreenval.rowPosDiff, HighestScoreVal);
+	_consScreen.PrintMenuValues(static_cast<uint16_t>(HighestScoreVal.length() / 2), _nEnterScreenVal.rowPosDiff - 5, _sEnterScreenVal.sValsHighestScore,std::nullopt);
+	_consScreen.PrintScoreBorders(1,static_cast<uint16_t>(HighestScoreVal.length()),std::nullopt);
+	_consPos.Position(_nEnterScreenVal.midPosDiff, _nEnterScreenVal.rowPosDiff, HighestScoreVal);
 	do
 	{
 		if (_kbhit())
