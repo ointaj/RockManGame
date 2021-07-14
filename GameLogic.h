@@ -24,18 +24,17 @@ public:
 
 class GameLogic : public bGameLogic
 {
-	friend class ConsoleScreen;
 	using str = std::string;
 private:
-
-	uint16_t scWidth{};
-	uint16_t scThickness{};
-	uint16_t scHeight{};
 	str sEmpTy = " ";
+	ConsoleScreen& _consScreen;
+	ConsolePos& _consPos;
 public:
-	GameLogic() = default;
-	GameLogic(const ConsoleScreen& cons) 
-		: scWidth(cons.ScreenWidth), scHeight(cons.ScreenHeight),scThickness(cons.ScreenThickness) {}
+	GameLogic(ConsoleScreen& cons, ConsolePos& consPos) 
+		: _consScreen(cons),
+		  _consPos(consPos)
+	{}
+	
 	virtual std::vector<std::vector<char>> setEntity(const ecPrint& eEntity) override;
 	virtual void CreateEntity(const uint16_t& fPos, const uint16_t& sPos, const ecPrint& eEntity) override;
 	virtual void EraseEntity(const uint16_t& fPos, const uint16_t& sPos, const ecPrint& eEntity) override;
@@ -43,6 +42,7 @@ public:
 	virtual void ColisionControl(const std::tuple<uint16_t, uint16_t, uint16_t>& PosData, bool& Loop) override;
 	virtual void AiLogic(void) override;
 	virtual void AiMovment(const std::vector<uint16_t>& genpOS, uint16_t& posOfEntity) override;
+
 	~GameLogic() = default;
 };
 
